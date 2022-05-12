@@ -1,4 +1,4 @@
-import { HighlightOutlined, UserOutlined } from '@ant-design/icons';
+import { GoogleOutlined } from '@ant-design/icons';
 import Button from 'antd/lib/button';
 
 import styles from '../styles/Home.module.scss';
@@ -8,12 +8,12 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.teacher}>
-        <Button type="primary" size="large" icon={<UserOutlined />}>
+        <Button type="primary" size="large" icon={<GoogleOutlined />}>
           Teacher Login
         </Button>
       </div>
       <div className={styles.student}>
-        <Button type="primary" size="large" icon={<HighlightOutlined />}>
+        <Button type="primary" size="large" icon={<GoogleOutlined />}>
           Student Login
         </Button>
       </div>
