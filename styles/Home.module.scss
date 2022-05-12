@@ -1,0 +1,20 @@
+.container{
+  padding: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.teacher, .student{
+  display: grid;
+  place-items: center;
+}
+
+.teacher{
+  background-color: #fafafa;
+}
+
+.student{
+  background-color: rgb(212, 254, 255);
+}
