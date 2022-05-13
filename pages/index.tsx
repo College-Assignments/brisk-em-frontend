@@ -21,7 +21,7 @@ const Home: NextPage = () => {
     setLoading(true);
     setTimeout(() => {
       router.push(route);
-    }, 800);
+    }, 500);
   };
 
   return (

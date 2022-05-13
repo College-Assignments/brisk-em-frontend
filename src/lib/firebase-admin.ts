@@ -13,7 +13,7 @@ if (!admin.apps.length) {
   admin.initializeApp(firebaseAdminConfig);
 }
 
-const db = admin.firestore();
-const auth = admin.auth();
+const adminFirestore = admin.firestore();
+const adminAuth = admin.auth();
 
-export { db, auth };
+export { adminFirestore, adminAuth, admin };

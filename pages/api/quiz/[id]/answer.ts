@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { auth } from '../../../../src/lib/firebase-admin';
+import { adminFirestore } from '../../../../src/lib/firebase-admin';
 import { addAnswer as addAnswerFb } from '../../../../src/services/db';
 
 export default async function Answer(req: NextApiRequest, res: NextApiResponse) {
@@ -16,7 +16,7 @@ export default async function Answer(req: NextApiRequest, res: NextApiResponse) 
 
 const addAnswer = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const user = await auth.verifyIdToken(req.headers.token as string);
+    const user = await adminFirestore.verifyIdToken(req.headers.token as string);
     const data = {
       ...req.body,
       quizId: req.query.id,
