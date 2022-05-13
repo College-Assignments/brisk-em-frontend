@@ -1,5 +1,7 @@
 import { Breadcrumb, Layout, Menu } from 'antd';
 import { Content, Footer, Header } from 'antd/lib/layout/layout';
+import Head from 'next/head';
+import { ReactElement, ReactNode } from 'react';
 
 const navbarItems = [
   {
@@ -7,22 +9,22 @@ const navbarItems = [
     label: 'Home',
   },
   {
-    key: 'students',
-    label: 'Students',
+    key: 'users',
+    label: 'Users',
   },
   {
-    key: 'teachers',
-    label: 'Teachers',
-  },
-  {
-    key: 'exams',
-    label: 'Exams',
+    key: 'tests',
+    label: 'Tests',
   },
 ];
 
-export default function Dashboard() {
+function TeachersDashboardLayout({ children }: { children: ReactNode }) {
   return (
     <Layout>
+      <Head>
+        <title>Teacher Dashboard</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
         <div className="logo" />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['home']} items={navbarItems} />
@@ -39,10 +41,14 @@ export default function Dashboard() {
             minHeight: 'calc(100vh - 64px - 70px - 22px - 32px)',
           }}
         >
-          Content
+          {children}
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Created by ©Suraj Mandal 2022</Footer>
     </Layout>
   );
 }
+
+export const getLayout = (page: any) => <TeachersDashboardLayout>{page}</TeachersDashboardLayout>;
+
+export default TeachersDashboardLayout;

@@ -1,10 +1,10 @@
+import '@/styles/globals.scss';
 import 'antd/dist/antd.css';
-import '../styles/globals.scss';
 
-import type { AppProps } from 'next/app';
+function MyApp({ Component, pageProps }) {
+  const getLayout = Component.getLayout || ((Page: any) => <Page />);
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return getLayout(<Component {...pageProps} />);
 }
 
 export default MyApp;

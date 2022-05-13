@@ -1,11 +1,10 @@
+import styles from '@/pages/common/login-loader.module.scss';
+import { auth } from '@/src/lib/firebase';
 import { GoogleOutlined } from '@ant-design/icons';
 import { Button, Spin } from 'antd';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
-
-import { auth } from '../../src/lib/firebase';
-import styles from './../common/login-loader.module.scss';
 
 export default function Student() {
   const router = useRouter();
@@ -16,7 +15,7 @@ export default function Student() {
     const timer = setTimeout(() => {
       if (!loading) {
         if (!user?.uid) signInWithGoogle();
-        else router.push('/teacher/dashboard');
+        else router.push('/teacher/home');
       }
     }, 1000);
 
