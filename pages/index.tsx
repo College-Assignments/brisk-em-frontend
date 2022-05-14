@@ -1,3 +1,4 @@
+import { getLayout } from '@/src/layouts/default';
 import { GoogleOutlined } from '@ant-design/icons';
 import Button from 'antd/lib/button';
 import { useRouter } from 'next/router';
@@ -5,8 +6,7 @@ import { useEffect, useState } from 'react';
 
 import styles from '../styles/Home.module.scss';
 
-import type { NextPage } from 'next';
-const Home: NextPage = () => {
+function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -50,6 +50,8 @@ const Home: NextPage = () => {
       </div>
     </div>
   );
-};
+}
+
+Home.getLayout = getLayout;
 
 export default Home;

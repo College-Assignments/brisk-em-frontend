@@ -9,7 +9,6 @@ if (!admin.apps.length) {
     }),
     databaseURL: process.env.FIREBASE_DATABASE_URL,
   };
-  console.log(firebaseAdminConfig);
   admin.initializeApp(firebaseAdminConfig);
 }
 
