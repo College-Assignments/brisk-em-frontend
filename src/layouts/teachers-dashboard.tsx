@@ -1,3 +1,4 @@
+import { BookOutlined, HomeFilled, LogoutOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import { Content, Footer, Header } from 'antd/lib/layout/layout';
 import Head from 'next/head';
@@ -6,16 +7,22 @@ import { ReactElement, ReactNode, useEffect, useState } from 'react';
 
 const navbarItems = [
   {
+    icon: <HomeFilled />,
     key: 'home',
     label: 'Home',
   },
   {
-    key: 'users',
-    label: 'Users',
-  },
-  {
+    icon: <BookOutlined />,
     key: 'tests',
     label: 'Tests',
+  },
+  {
+    icon: <LogoutOutlined />,
+    key: 'logout',
+    label: 'Logout',
+    style: {
+      marginLeft: 'auto',
+    },
   },
 ];
 
@@ -36,15 +43,28 @@ function TeachersDashboardLayout({ children }: { children: ReactNode }) {
       </Head>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" selectedKeys={[selected]}>
-          {navbarItems.map(({ key, label }) => (
-            <Menu.Item key={key} onClick={() => router.push(`/teacher/${key}`)}>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          selectedKeys={[selected]}
+          style={{ display: 'flex' }}
+        >
+          {navbarItems.map(({ key, label, icon, style }) => (
+            <Menu.Item
+              key={key}
+              icon={icon}
+              style={style}
+              onClick={() => router.push(`/teacher/${key}`)}
+            >
               {label}
             </Menu.Item>
           ))}
         </Menu>
       </Header>
-      <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
+      <Content
+        className="site-layout"
+        style={{ padding: '0 50px', marginTop: 64 }}
+      >
         <Breadcrumb style={{ margin: '16px 0' }}>
           <Breadcrumb.Item>Home</Breadcrumb.Item>
           <Breadcrumb.Item>_</Breadcrumb.Item>
@@ -59,11 +79,15 @@ function TeachersDashboardLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Created by ©Suraj Mandal 2022</Footer>
+      <Footer style={{ textAlign: 'center' }}>
+        Created by ©Suraj Mandal 2022
+      </Footer>
     </Layout>
   );
 }
 
-export const getLayout = (page: any) => <TeachersDashboardLayout>{page}</TeachersDashboardLayout>;
+export const getLayout = (page: any) => (
+  <TeachersDashboardLayout>{page}</TeachersDashboardLayout>
+);
 
 export default TeachersDashboardLayout;

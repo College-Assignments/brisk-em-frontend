@@ -14,14 +14,18 @@ function Student() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      console.log(user);
       if (!loading) {
-        if (!user?.uid) signInWithGoogle();
+        console.log('Inside loading');
+        if (!user) signInWithGoogle();
         else router.push('/teacher/home');
+        console.log('End of loading');
       }
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [loading, router, user?.uid, signInWithGoogle]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   return (
     <div className={styles.container}>

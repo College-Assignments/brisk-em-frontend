@@ -21,7 +21,7 @@ function Home() {
     setLoading(true);
     setTimeout(() => {
       router.push(route);
-    }, 500);
+    }, 100);
   };
 
   return (
