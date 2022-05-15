@@ -1,4 +1,5 @@
 import styles from '@/pages/common/login-loader.module.scss';
+import { getLayout } from '@/src/layouts/default';
 import { auth } from '@/src/lib/firebase';
 import { GoogleOutlined } from '@ant-design/icons';
 import { Button, Spin } from 'antd';
@@ -6,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 
-export default function Student() {
+function Student() {
   const router = useRouter();
   const [user, loading] = useAuthState(auth);
   const [signInWithGoogle] = useSignInWithGoogle(auth);
@@ -37,3 +38,7 @@ export default function Student() {
     </div>
   );
 }
+
+Student.getLayout = getLayout;
+
+export default Student;

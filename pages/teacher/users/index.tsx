@@ -1,5 +1,6 @@
 import { getLayout } from '@/src/layouts/teachers-dashboard';
 import { Space, Table } from 'antd';
+import { useEffect } from 'react';
 
 const { Column } = Table;
 
@@ -28,6 +29,19 @@ const data = [
 ];
 
 function Users() {
+  // const { isLoading, error, data } = useQuery<boolean, Error, any>('users', () =>
+  //   fetch('/api/users').then((res) => res.json())
+  // );
+
+  useEffect(() => {
+    async function getData() {
+      const res = await fetch('/api/users');
+      const data = await res.json();
+      console.log(data);
+    }
+    getData();
+  }, []);
+
   return (
     <Table dataSource={data}>
       <Column title="Name" dataIndex="firstName" key="firstName" />

@@ -21,7 +21,7 @@ const navbarItems = [
 
 function TeachersDashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const [selected, setSelected] = useState<string>();
+  const [selected, setSelected] = useState<string>('home');
 
   useEffect(() => {
     setSelected(router.pathname.replace('/teacher/', ''));

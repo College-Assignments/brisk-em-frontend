@@ -1,12 +1,8 @@
 import axios from 'axios';
 
-export const getUsers = async (auth: { token: any }) => {
+export const getUsers = async () => {
   try {
-    const header = {
-      'Content-Type': 'application/json',
-      token: auth.token,
-    };
-    const response = await axios.get('/api/users', { headers: header });
+    const response = await axios.get('/api/users');
     return response;
   } catch (error) {
     throw error;

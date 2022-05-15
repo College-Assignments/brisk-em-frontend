@@ -1,10 +1,10 @@
+import { getLayout } from '@/src/layouts/default';
 import { GoogleOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 import styles from './../common/login-loader.module.scss';
 
-import type { NextPage } from 'next';
-const Student: NextPage = () => {
+const Student = () => {
   return (
     <div className={styles.container}>
       <GoogleOutlined className={styles.googleIcon} />
@@ -14,5 +14,7 @@ const Student: NextPage = () => {
     </div>
   );
 };
+
+Student.getLayout = getLayout;
 
 export default Student;
