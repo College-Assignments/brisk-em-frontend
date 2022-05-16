@@ -31,24 +31,19 @@ const navbarItems = [
   },
 ];
 
-function TeachersDashboardLayout({ children }: { children: ReactNode }) {
+function StudentDashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [selected, setSelected] = useState<string>('home');
 
   useEffect(() => {
-    setSelected(router.pathname.replace('/teacher/', ''));
-    console.log(
-      router.pathname.split('/').filter((e) => {
-        if (!e) return;
-        return e[0].toUpperCase() + e.slice(1);
-      })
-    );
+    setSelected(router.pathname.replace('/student/', ''));
+    console.log(router.pathname.replace('/student/', ''));
   }, [router.pathname]);
 
   return (
     <Layout>
       <Head>
-        <title>Teacher Dashboard</title>
+        <title>Student Dashboard</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
@@ -108,7 +103,7 @@ const logoStyle: CSSProperties = {
 };
 
 export const getLayout = (page: any) => (
-  <TeachersDashboardLayout>{page}</TeachersDashboardLayout>
+  <StudentDashboardLayout>{page}</StudentDashboardLayout>
 );
 
-export default TeachersDashboardLayout;
+export default StudentDashboardLayout;
