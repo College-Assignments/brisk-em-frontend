@@ -1,24 +1,14 @@
-import { getLayout } from '@/src/layouts/teacher-dashboard';
+import { getLayout } from '@/src/layouts/student-dashboard';
 import { getAllQuiz, getAllUsers } from '@/src/services/db';
 import { Box, Divider, Heading, Text } from '@chakra-ui/react';
-import { Button } from 'antd';
 import { useRouter } from 'next/router';
 
 function Users(props: any) {
   const router = useRouter();
   const quiz = JSON.parse(props?.quiz);
 
-  function navigateToCreateTest() {
-    router.push('/teacher/tests/new');
-  }
-
   return (
     <div>
-      <Button type="dashed" onClick={navigateToCreateTest} style={{ width: 240 }}>Create Test</Button>
-
-
-      {/* Show Existing Tests */}
-      <div>
         {quiz.length > 0 && (
           <div style={{ display: 'grid' }}>
             {quiz.map((singleQuiz: any) => (
@@ -34,8 +24,6 @@ function Users(props: any) {
             ))}
           </div>
         )}
-      </div>
-
     </div>
   );
 }
@@ -44,7 +32,7 @@ Users.getLayout = getLayout;
 
 const generateQuizCard = (singleQuiz: any) => {
   return (
-    <Box mt={6} borderWidth="1px" borderRadius="lg" p={6} boxShadow="sm" bg="white">
+    <Box mt={2} borderWidth="1px" borderRadius="lg" p={6} boxShadow="sm" bg="white">
       <Heading as="h3" size="md" fontWeight={600}>{singleQuiz.title}</Heading>
 
       <Text color="gray.500" mt={2}>

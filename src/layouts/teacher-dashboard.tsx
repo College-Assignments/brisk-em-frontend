@@ -33,15 +33,16 @@ const navbarItems = [
 
 function TeachersDashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const [selected, setSelected] = useState<string>('home');
+
+
   const breadcrumbItems = router.pathname.split('/').map((e) => {
     if (!e) return;
     return `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`;
   }).filter(Boolean);
-  const [selected, setSelected] = useState<string>('home');
 
   useEffect(() => {
     setSelected(router.pathname.replace('/teacher/', ''));
-
   }, [router.pathname]);
 
   return (
@@ -77,7 +78,7 @@ function TeachersDashboardLayout({ children }: { children: ReactNode }) {
         className="site-layout"
         style={{ padding: '0 50px', marginTop: 64 }}
       >
-        <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb style={{ margin: '2rem 0 0 0' }}>
           {breadcrumbItems.map((e, i) => (
             <Breadcrumb.Item key={i}>{e}</Breadcrumb.Item>
           ))}

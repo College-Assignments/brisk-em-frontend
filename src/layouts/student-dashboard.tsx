@@ -3,7 +3,7 @@ import { Breadcrumb, Layout, Menu } from 'antd';
 import { Content, Footer, Header } from 'antd/lib/layout/layout';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { CSSProperties, ReactElement, ReactNode, useEffect, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 
 const navbarItems = [
   {
@@ -40,14 +40,13 @@ function StudentsDashboardLayout({ children }: { children: ReactNode }) {
   const [selected, setSelected] = useState<string>('home');
 
   useEffect(() => {
-    setSelected(router.pathname.replace('/teacher/', ''));
-
+    setSelected(router.pathname.replace('/student/', ''));
   }, [router.pathname]);
 
   return (
     <Layout>
       <Head>
-        <title>Teacher Dashboard</title>
+        <title>Student Dashboard</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
@@ -66,7 +65,7 @@ function StudentsDashboardLayout({ children }: { children: ReactNode }) {
               key={key}
               icon={icon}
               style={style}
-              onClick={() => router.push(`/teacher/${key}`)}
+              onClick={() => router.push(`/student/${key}`)}
             >
               {label}
             </Menu.Item>
@@ -77,7 +76,7 @@ function StudentsDashboardLayout({ children }: { children: ReactNode }) {
         className="site-layout"
         style={{ padding: '0 50px', marginTop: 64 }}
       >
-        <Breadcrumb style={{ margin: '16px 0' }}>
+        <Breadcrumb style={{ margin: '2rem 0 0 0' }}>
           {breadcrumbItems.map((e, i) => (
             <Breadcrumb.Item key={i}>{e}</Breadcrumb.Item>
           ))}
