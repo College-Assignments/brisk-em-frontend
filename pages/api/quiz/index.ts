@@ -4,13 +4,13 @@ import { adminAuth } from '../../../src/lib/firebase-admin';
 import { addQuiz as addQuizMethod } from '../../../src/services/db';
 
 export default async function Quiz(req: NextApiRequest, res: NextApiResponse) {
-  switch (req.method) {
-    case 'POST':
-      await addQuiz(req, res);
-      break;
-    default:
-      res.status(405).json({ status: false, message: 'Method Not found' });
-      break;
+  if (req.method === 'POST') {
+    await addQuiz(req, res);
+    res
+      .status(200)
+      .json({ status: true, message: 'Quiz added successfully...' });
+  } else {
+    res.status(405).json({ status: false, message: 'Invalid Request' });
   }
 }
 
