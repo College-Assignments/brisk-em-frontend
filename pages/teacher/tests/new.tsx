@@ -1,3 +1,5 @@
+import { answerOption, optionData } from '@/src/constants/new-test';
+import { getLayout } from '@/src/layouts/teachers-dashboard';
 import { auth } from '@/src/lib/firebase';
 import { addQuizApi } from '@/src/routes/quiz';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
@@ -24,41 +26,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { v4 as uuidv4 } from 'uuid';
 import * as yup from 'yup';
 
-const optionData = [
-  {
-    label: 'Option A:',
-  },
-  {
-    label: 'Option B:',
-  },
-  {
-    label: 'Option C:',
-  },
-  {
-    label: 'Option D:',
-  },
-];
-
-const answerOption = [
-  {
-    label: 'A',
-    answer: 0,
-  },
-  {
-    label: 'B',
-    answer: 1,
-  },
-  {
-    label: 'C',
-    answer: 2,
-  },
-  {
-    label: 'D',
-    answer: 3,
-  },
-];
-
-const Index = () => {
+const NewTest = () => {
   const [user, loading] = useAuthState(auth);
 
   const router = useRouter();
@@ -119,7 +87,7 @@ const Index = () => {
       };
       const token = await user!.getIdToken();
       await addQuizApi({ token }, values);
-      router.push('/');
+      router.push('/teacher/tests');
     } catch (error) {
       console.log('error', error);
     } finally {
@@ -137,6 +105,7 @@ const Index = () => {
         borderRadius="lg"
         p={6}
         boxShadow="xl"
+        bg={'white'}
       >
         <Formik
           initialValues={initialValues}
@@ -181,7 +150,7 @@ const Index = () => {
                     <FormLabel htmlFor="questions" fontSize="xl" mt={4}>
                       Enter your question data:
                     </FormLabel>
-                    <Box ml={4}>
+                    <Box mt={4}>
                       <FieldArray {...field} name="questions" id="questions">
                         {(fieldArrayProps) => {
                           const { push, remove, form } = fieldArrayProps;
@@ -259,10 +228,7 @@ const Index = () => {
                                         }}
                                       >
                                         {answerOption.map((value, key) => (
-                                          <option
-                                            value={value.answer}
-                                            key={key}
-                                          >
+                                          <option value={value.answer} key={key}>
                                             {value.label}
                                           </option>
                                         ))}
@@ -332,4 +298,6 @@ const Index = () => {
   );
 };
 
-export default Index;
+NewTest.getLayout = getLayout;
+
+export default NewTest;
