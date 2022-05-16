@@ -10,7 +10,11 @@ function Users() {
 
   return (
     <div>
-      <Button type="dashed" onClick={navigateToCreateTest} style={{ width: 240 }}>
+      <Button
+        type="dashed"
+        onClick={navigateToCreateTest}
+        style={{ width: 240 }}
+      >
         Create Test
       </Button>
     </div>

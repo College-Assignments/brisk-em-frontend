@@ -2,27 +2,22 @@ import styles from '@/pages/common/login-loader.module.scss';
 import { getLayout } from '@/src/layouts/default';
 import { auth } from '@/src/lib/firebase';
 import { GoogleOutlined } from '@ant-design/icons';
-import { Button, Spin } from 'antd';
+import { signOut } from '@firebase/auth';
+import { Spin } from 'antd';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
-function Teacher() {
+function Logout() {
   const router = useRouter();
   const [user, loading] = useAuthState(auth);
-  const [signInWithGoogle] = useSignInWithGoogle(auth);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log(user);
-      if (!loading) {
-        console.log('Inside loading');
-        if (!user) signInWithGoogle().then(() => router.push('/teacher/home'));
-        else router.push('/teacher/home');
-      }
-    }, 1000);
+    if (!loading) {
+      if (user) signOut(auth);
+      router.push('/');
+    }
 
-    return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
@@ -31,17 +26,14 @@ function Teacher() {
       <GoogleOutlined className={styles.googleIcon} />
       <br />
       <span style={{ color: '#343434', fontSize: '1.1rem' }}>
-        <Spin /> &nbsp; Logging In...
+        <Spin /> &nbsp; Loging out...
       </span>
       <br />
       <br />
-      <Button size="middle" onClick={() => signInWithGoogle()}>
-        Re-Authenticate
-      </Button>
     </div>
   );
 }
 
-Teacher.getLayout = getLayout;
+Logout.getLayout = getLayout;
 
-export default Teacher;
+export default Logout;

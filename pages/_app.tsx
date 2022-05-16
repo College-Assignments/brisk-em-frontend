@@ -1,6 +1,7 @@
 import 'antd/dist/antd.css';
 import '@/styles/globals.scss';
 
+import { getLayout as defaultLayout } from '@/src/layouts/default';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -18,7 +19,7 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }: any) {
-  const getLayout = Component.getLayout || ((Page: any) => <Page />);
+  const getLayout: any = Component?.getLayout || defaultLayout;
 
   return (
     <QueryClientProvider client={queryClient}>
