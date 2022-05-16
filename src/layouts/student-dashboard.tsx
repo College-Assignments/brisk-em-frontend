@@ -14,16 +14,16 @@ const navbarItems = [
   {
     icon: <BookFilled />,
     key: 'tests',
-    label: 'Tests',
+    label: 'Available Tests',
   },
   {
     icon: <CheckOutlined />,
     key: 'results',
-    label: 'Results',
+    label: 'My Results',
   },
   {
     icon: <LogoutOutlined />,
-    key: 'logout',
+    key: '../logout',
     label: 'Logout',
     style: {
       marginLeft: 'auto',
@@ -31,19 +31,23 @@ const navbarItems = [
   },
 ];
 
-function StudentDashboardLayout({ children }: { children: ReactNode }) {
+function StudentsDashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const breadcrumbItems = router.pathname.split('/').map((e) => {
+    if (!e) return;
+    return `${e[0].toUpperCase()}${e.slice(1).toLowerCase()}`;
+  }).filter(Boolean);
   const [selected, setSelected] = useState<string>('home');
 
   useEffect(() => {
-    setSelected(router.pathname.replace('/student/', ''));
-    console.log(router.pathname.replace('/student/', ''));
+    setSelected(router.pathname.replace('/teacher/', ''));
+
   }, [router.pathname]);
 
   return (
     <Layout>
       <Head>
-        <title>Student Dashboard</title>
+        <title>Teacher Dashboard</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
@@ -74,13 +78,15 @@ function StudentDashboardLayout({ children }: { children: ReactNode }) {
         style={{ padding: '0 50px', marginTop: 64 }}
       >
         <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>_</Breadcrumb.Item>
+          {breadcrumbItems.map((e, i) => (
+            <Breadcrumb.Item key={i}>{e}</Breadcrumb.Item>
+          ))}
         </Breadcrumb>
         <div
           className="site-layout-background"
           style={{
-            padding: 24,
+            paddingTop: 24,
+            paddingBottom: 24,
             minHeight: 'calc(100vh - 64px - 70px - 22px - 32px)',
           }}
         >
@@ -95,15 +101,13 @@ function StudentDashboardLayout({ children }: { children: ReactNode }) {
 }
 
 const logoStyle: CSSProperties = {
-  paddingTop: 2,
-  marginBottom: -2,
   fontSize: '1.2rem',
   fontFamily: 'Overpass',
   textDecoration: 'underline',
 };
 
 export const getLayout = (page: any) => (
-  <StudentDashboardLayout>{page}</StudentDashboardLayout>
+  <StudentsDashboardLayout>{page}</StudentsDashboardLayout>
 );
 
-export default StudentDashboardLayout;
+export default StudentsDashboardLayout;
