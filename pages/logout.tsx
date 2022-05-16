@@ -1,6 +1,6 @@
-import styles from '@/pages/common/login-loader.module.scss';
 import { getLayout } from '@/src/layouts/default';
 import { auth } from '@/src/lib/firebase';
+import styles from '@/styles/login-loader.module.scss';
 import { GoogleOutlined } from '@ant-design/icons';
 import { signOut } from '@firebase/auth';
 import { Spin } from 'antd';

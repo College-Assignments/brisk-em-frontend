@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 
-function Teacher() {
+function Student() {
   const router = useRouter();
   const [user, loading] = useAuthState(auth);
   const [signInWithGoogle] = useSignInWithGoogle(auth);
@@ -17,8 +17,8 @@ function Teacher() {
       console.log(user);
       if (!loading) {
         console.log('Inside loading');
-        if (!user) signInWithGoogle().then(() => router.push('/teacher/home'));
-        else router.push('/teacher/home');
+        if (!user) signInWithGoogle().then(() => router.push('/student/home'));
+        else router.push('/student/home');
       }
     }, 1000);
 
@@ -42,6 +42,6 @@ function Teacher() {
   );
 }
 
-Teacher.getLayout = getLayout;
+Student.getLayout = getLayout;
 
-export default Teacher;
+export default Student;
