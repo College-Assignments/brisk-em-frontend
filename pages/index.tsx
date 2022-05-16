@@ -19,9 +19,7 @@ function Home() {
 
   const handleNavigation = (route: string) => {
     setLoading(true);
-    setTimeout(() => {
-      router.push(route);
-    }, 100);
+    router.push(route);
   };
 
   return (

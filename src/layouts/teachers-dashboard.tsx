@@ -100,8 +100,6 @@ function TeachersDashboardLayout({ children }: { children: ReactNode }) {
 }
 
 const logoStyle: CSSProperties = {
-  paddingTop: 2,
-  marginBottom: -2,
   fontSize: '1.2rem',
   fontFamily: 'Overpass',
   textDecoration: 'underline',

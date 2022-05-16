@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const addQuizApi = async (auth: { token: any }, values: any) => {
+export const addQuizApi = async (auth: any, values: any) => {
   try {
     const header = {
       'Content-Type': 'application/json',

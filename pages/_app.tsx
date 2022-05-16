@@ -1,6 +1,7 @@
 import 'antd/dist/antd.css';
 import '@/styles/globals.scss';
 
+import { ChakraProvider } from '@chakra-ui/react';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
@@ -21,7 +22,7 @@ function MyApp({ Component, pageProps }: any) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {getLayout(<Component {...pageProps} />)}
+      <ChakraProvider>{getLayout(<Component {...pageProps} />)}</ChakraProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
