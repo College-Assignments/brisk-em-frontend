@@ -85,9 +85,10 @@ const NewTest = () => {
           };
         }),
       };
+      console.log(values);
       const token = await user!.getIdToken();
       await addQuizApi({ token }, values);
-      router.push('/teacher/tests');
+      // router.push('/teacher/tests');
     } catch (error) {
       console.log('error', error);
     } finally {

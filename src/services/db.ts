@@ -56,6 +56,7 @@ export const addUser = async (authUser: any) => {
   return resp;
 };
 
+// Used by Backend
 export const addQuiz = async (quizData: any) => {
   let response = await addDoc(collection(db, 'quiz'), quizData);
   return response;

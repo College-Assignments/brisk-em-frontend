@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+
+// Used by Frontend
 export const addQuizApi = async (auth: any, values: any) => {
   try {
     const header = {
