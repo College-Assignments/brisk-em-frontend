@@ -3,25 +3,10 @@ import { addDoc, collection, doc, getDoc, getDocs, query, setDoc } from 'firebas
 import { db } from '../lib/firebase';
 
 /**
- * 
+ *
  * THESE METHODS GET DATA FROM DB
- * 
+ *
  */
-
-export const getAllQuiz = async () => {
-  const q = query(collection(db, 'quiz'));
-  const snapshot = await getDocs(q);
-  const quiz = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  return quiz;
-};
-
-export const getAllUsers = async () => {
-  const q = query(collection(db, 'users'));
-  const snapshot = await getDocs(q);
-  const users = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  return users;
-};
-
 export const getSingleQuiz = async (quizId: string | string[]) => {
   const docRef = doc(db, 'quiz', String(quizId));
   const snapshot = await getDoc(docRef);
@@ -29,12 +14,24 @@ export const getSingleQuiz = async (quizId: string | string[]) => {
   return quizData;
 };
 
-
+export const getAllQuiz = async () => {
+  const q = query(collection(db, 'quiz'));
+  const snapshot = await getDocs(q);
+  const quiz = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  return quiz;
+};
 export const getAnswer = async (answerId: string | string[]) => {
   const docRef = doc(db, 'answer', String(answerId));
   const snapshot = await getDoc(docRef);
   let answerData = snapshot.exists() ? JSON.stringify(snapshot.data()) : null;
   return answerData;
+};
+
+export const getAllUsers = async () => {
+  const q = query(collection(db, 'users'));
+  const snapshot = await getDocs(q);
+  const users = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  return users;
 };
 
 /**

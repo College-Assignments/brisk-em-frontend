@@ -33,7 +33,7 @@ const NewTest = () => {
 
   useEffect(() => {
     if (!user && !loading) {
-      router.push('/signin?next=/quiz/new');
+      router.push('/signin?next=/teacher/tests/new');
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

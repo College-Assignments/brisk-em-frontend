@@ -27,6 +27,7 @@ function Users(props: any) {
                 m={2}
                 as="button"
                 textAlign="start"
+                // TODO: Change here to edit quiz
                 onClick={() => router.push(`/quiz/${singleQuiz.id}`)}
               >
                 {generateQuizCard(singleQuiz)}

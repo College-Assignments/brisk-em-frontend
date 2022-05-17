@@ -13,11 +13,11 @@ export const addQuizApi = async (auth: any, values: any) => {
   }
 };
 
-export const addAnswerApi = async (auth: { token: any }, quizId: any, values: any) => {
+export const addAnswerApi = async (token: string, quizId: any, values: any) => {
   try {
     const header = {
       'Content-Type': 'application/json',
-      token: auth.token,
+      token: token,
     };
     const resp = await axios.post(
       `/api/quiz/${quizId}/answer`,

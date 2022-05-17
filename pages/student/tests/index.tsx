@@ -17,9 +17,9 @@ function Users(props: any) {
                 m={2}
                 as="button"
                 textAlign="start"
-                onClick={() => router.push(`/quiz/${singleQuiz.id}`)}
+                onClick={() => router.push(`/student/tests/${singleQuiz.id}`)}
               >
-                {generateQuizCard(singleQuiz)}
+                {quizCard(singleQuiz)}
               </Box>
             ))}
           </div>
@@ -30,7 +30,7 @@ function Users(props: any) {
 
 Users.getLayout = getLayout;
 
-const generateQuizCard = (singleQuiz: any) => {
+const quizCard = (singleQuiz: any) => {
   return (
     <Box mt={2} borderWidth="1px" borderRadius="lg" p={6} boxShadow="sm" bg="white">
       <Heading as="h3" size="md" fontWeight={600}>{singleQuiz.title}</Heading>
