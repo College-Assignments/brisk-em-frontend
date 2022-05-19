@@ -1,4 +1,4 @@
-import { BookFilled, CheckOutlined, HomeFilled, LogoutOutlined } from '@ant-design/icons';
+import { BookFilled, CheckOutlined, HomeFilled, LogoutOutlined, RobotOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
 import Head from 'next/head';
@@ -47,6 +47,11 @@ const navbarItems = [
     icon: <BookFilled />,
     key: 'tests',
     label: 'Tests',
+  },
+  {
+    icon: <RobotOutlined />,
+    key: 'ai',
+    label: 'AI Tools',
   },
   {
     icon: <CheckOutlined />,
