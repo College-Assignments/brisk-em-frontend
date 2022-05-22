@@ -1,12 +1,14 @@
 import { getLayout } from '@/src/layouts/teacher-dashboard';
 import { wikigen, wikisearch } from '@/src/routes/ai/wikigen';
 import { Search2Icon, TimeIcon } from '@chakra-ui/icons';
-import { Alert, AlertIcon, Button, Fade, FormControl, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button, Fade, FormControl, FormLabel, Input, Select, Stack, useToast } from '@chakra-ui/react';
 import { Card } from 'antd';
 import { Field, Form, Formik } from 'formik';
 import { useState } from 'react';
 
 function WikiGen() {
+  const toast = useToast();
+
   const [topics, setTopics] = useState<string[]>([]);
   const [QA, setQA] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,11 +20,23 @@ function WikiGen() {
   }
 
   async function generateQA(values: any, actions: any) {
-    setLoading(true);
-    const data = await wikigen({ topic: values.topic });
-    setQA(data);
-    setLoading(false);
-    actions.setSubmitting(false);
+    try {
+      setLoading(true);
+      const data = await wikigen({ topic: values.topic });
+      setQA(data);
+      setLoading(false);
+      actions.setSubmitting(false);
+    } catch (err) {
+      console.log(err);
+      toast({
+        status: 'error',
+        isClosable: true,
+        position: 'bottom',
+        title: 'Error Occured, Please Report to Admin',
+      });
+      setLoading(false);
+      actions.setSubmitting(false);
+    }
   }
 
   return (
