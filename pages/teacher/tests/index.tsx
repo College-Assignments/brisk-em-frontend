@@ -14,9 +14,17 @@ function Users(props: any) {
 
   return (
     <div>
-      <Button type="dashed" onClick={navigateToCreateTest} style={{ width: 240 }}>Create Test</Button>
+      <Button
+        type="dashed"
+        onClick={navigateToCreateTest}
+        style={{ width: 240 }}
+      >
+        Create Test
+      </Button>
 
-
+      <br />
+      <br />
+      <Divider />
       {/* Show Existing Tests */}
       <div>
         {quiz.length > 0 && (
@@ -24,7 +32,7 @@ function Users(props: any) {
             {quiz.map((singleQuiz: any) => (
               <Box
                 key={singleQuiz.id}
-                m={2}
+                m={1}
                 as="button"
                 textAlign="start"
                 // TODO: Change here to edit quiz
@@ -36,7 +44,6 @@ function Users(props: any) {
           </div>
         )}
       </div>
-
     </div>
   );
 }
@@ -45,11 +52,20 @@ Users.getLayout = getLayout;
 
 const generateQuizCard = (singleQuiz: any) => {
   return (
-    <Box mt={6} borderWidth="1px" borderRadius="lg" p={6} boxShadow="sm" bg="white">
-      <Heading as="h3" size="md" fontWeight={600}>{singleQuiz.title}</Heading>
+    <Box
+      p={6}
+      mt={4}
+      borderWidth="1px"
+      borderRadius="lg"
+      boxShadow="sm"
+      bg="white"
+    >
+      <Heading as="h3" size="md" fontWeight={600}>
+        {singleQuiz.title}
+      </Heading>
 
       <Text color="gray.500" mt={2}>
-        Posted By: {singleQuiz.user.name}
+        Posted By: {singleQuiz.user?.name}
       </Text>
       <Text color="gray.500" mt={2}>
         Questions: {singleQuiz.questions.length}
@@ -65,7 +81,10 @@ export async function getServerSideProps() {
   const quiz = await getAllQuiz();
   const users = await getAllUsers();
   const data = quiz.map((singleQuiz: any) => {
-    return { ...singleQuiz, user: users.find((user) => user.id === singleQuiz.userId) };
+    return {
+      ...singleQuiz,
+      user: users.find((user) => user.id === singleQuiz.userId),
+    };
   });
   return { props: { quiz: JSON.stringify(data) } };
 }

@@ -1,7 +1,7 @@
 import { getLayout } from '@/src/layouts/teacher-dashboard';
 import { wikigen, wikisearch } from '@/src/routes/ai/wikigen';
 import { Search2Icon, TimeIcon } from '@chakra-ui/icons';
-import { Button, FormControl, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button, Fade, FormControl, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
 import { Card } from 'antd';
 import { Field, Form, Formik } from 'formik';
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import { useState } from 'react';
 function WikiGen() {
   const [topics, setTopics] = useState<string[]>([]);
   const [QA, setQA] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function searchTopic(values: any, actions: any) {
     const data = await wikisearch({ searchQuery: values.search });
@@ -17,9 +18,10 @@ function WikiGen() {
   }
 
   async function generateQA(values: any, actions: any) {
+    setLoading(true);
     const data = await wikigen({ topic: values.topic });
-    console.log(data);
     setQA(data);
+    setLoading(false);
     actions.setSubmitting(false);
   }
 
@@ -86,8 +88,8 @@ function WikiGen() {
                   minWidth="160px"
                   colorScheme="gray"
                   leftIcon={<TimeIcon />}
-                  style={{ marginTop: 'auto', borderRadius: 6 }}
                   isLoading={props.isSubmitting}
+                  style={{ marginTop: 'auto', borderRadius: 6 }}
                 >
                   Generate QA
                 </Button>
@@ -97,11 +99,23 @@ function WikiGen() {
         </Formik>
       )}
 
-      <br />
-      <br />
+      {loading && (
+        <>
+          <br />
+          <Fade in={loading}>
+            <Alert status="warning" borderRadius={8}>
+              <AlertIcon />
+              Generating QA takes time. Please be patient.
+            </Alert>
+          </Fade>
+        </>
+      )}
+
       {/* RESULT */}
       {QA && (
         <div>
+          <br />
+          <br />
           <h3
             style={{
               fontSize: 22,
