@@ -8,7 +8,7 @@ export async function wikisearch({ searchQuery }: { searchQuery: string }) {
   return res.data;
 }
 
-export async function wikigen({ topic: topic }: { topic: string }) {
+export async function wikigen({ topic }: { topic: string }) {
   const res = await axios.post(
     `${BASE_URL}/api/ai/generateqa?article=${topic}`
   );

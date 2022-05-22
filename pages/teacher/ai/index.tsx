@@ -34,12 +34,13 @@ function GenCard({ title, imageUrl, description, link }: any) {
     <Box
       key={link}
       style={{
-        transition: 'all 0.15s ease-in-out',
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.1)',
+        borderColor: '#d0d0d0',
+        boxShadow: 'rgba(17, 17, 26, 0.05) 0px 0px 16px',
+        transition: 'all 0.12s cubic-bezier(0.45, 0.05, 0.55, 0.95) 0s',
       }}
       _hover={{
         cursor: 'pointer',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1) !important',
+        boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 50px !important',
       }}
       maxW="sm"
       minW={320}
