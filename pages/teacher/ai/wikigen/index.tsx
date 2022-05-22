@@ -101,9 +101,35 @@ function WikiGen() {
       <br />
       {/* RESULT */}
       {QA && (
-        <pre>
-          <code>{JSON.stringify(QA, null, 2)}</code>
-        </pre>
+        <div>
+          <h3
+            style={{
+              fontSize: 22,
+              fontWeight: 500,
+              color: '#333',
+              fontFamily: 'Overpass',
+            }}
+          >
+            Generated Questions
+          </h3>
+          <br />
+          {QA.map((item: { question: string; answer: string }) => (
+            <Card
+              key={item.question}
+              style={{
+                border: 'none',
+                borderRadius: 8,
+                marginBottom: 12,
+                fontFamily: 'Overpass',
+                boxShadow:
+                  'rgba(0, 0, 0, 0.04) 0px 6px 24px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px',
+              }}
+            >
+              <span style={{ fontSize: 18 }}>{item.question}</span>
+              <p style={{ color: '#666', fontSize: 16 }}>{item.answer}</p>
+            </Card>
+          ))}
+        </div>
       )}
     </Card>
   );

@@ -32,6 +32,7 @@ function GenCard({ title, imageUrl, description, link }: any) {
 
   return (
     <Box
+      key={link}
       style={{
         transition: 'all 0.15s ease-in-out',
         boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.1)',
