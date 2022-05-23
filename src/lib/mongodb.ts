@@ -6,7 +6,7 @@ const MONGODB_DB = process.env.NEXT_PUBLIC_MONGODB_URI!;
 let client: MongoClient | null = null;
 let db: Db | null = null;
 
-export async function connectToDatabase() {
+export async function getMongo() {
   if (client && db) {
     return {
       client: client,
@@ -24,8 +24,17 @@ export async function connectToDatabase() {
   await client.connect();
   db = client.db(MONGODB_DB);
 
+  // Mongodb Collections
+  const CAnswer = db.collection('answer');
+  const CQuiz = db.collection('quiz');
+  const CUsers = db.collection('users');
+
   return {
     client,
     db,
+    // Export collections
+    CAnswer,
+    CQuiz,
+    CUsers,
   };
 }

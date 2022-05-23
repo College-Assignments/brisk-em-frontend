@@ -3,6 +3,7 @@ import '@/styles/globals.scss';
 
 import { getLayout as defaultLayout } from '@/src/layouts/default';
 import { ChakraProvider } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 

@@ -1,12 +1,14 @@
+import { BASE_URL } from '@/src/constants/base';
 import { getLayout } from '@/src/layouts/teacher-dashboard';
-import { getAllQuiz, getAllUsers } from '@/src/services/db';
+import { fetcher } from '@/src/lib/swr';
 import { Box, Divider, Heading, Text } from '@chakra-ui/react';
 import { Button } from 'antd';
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
 
-function Users(props: any) {
+function Tests() {
   const router = useRouter();
-  const quiz = JSON.parse(props?.quiz);
+  const { data: quiz } = useSWR(BASE_URL + '/api/common/all-quiz', fetcher);
 
   function navigateToCreateTest() {
     router.push('/teacher/tests/new');
@@ -27,7 +29,7 @@ function Users(props: any) {
       <Divider />
       {/* Show Existing Tests */}
       <div>
-        {quiz.length > 0 && (
+        {quiz?.length > 0 && (
           <div style={{ display: 'grid' }}>
             {quiz.map((singleQuiz: any) => (
               <Box
@@ -48,7 +50,7 @@ function Users(props: any) {
   );
 }
 
-Users.getLayout = getLayout;
+Tests.getLayout = getLayout;
 
 const generateQuizCard = (singleQuiz: any) => {
   return (
@@ -77,16 +79,4 @@ const generateQuizCard = (singleQuiz: any) => {
   );
 };
 
-export async function getServerSideProps() {
-  const quiz = await getAllQuiz();
-  const users = await getAllUsers();
-  const data = quiz.map((singleQuiz: any) => {
-    return {
-      ...singleQuiz,
-      user: users.find((user) => user.id === singleQuiz.userId),
-    };
-  });
-  return { props: { quiz: JSON.stringify(data) } };
-}
-
-export default Users;
+export default Tests;
