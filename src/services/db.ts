@@ -1,3 +1,4 @@
+import { AuthFormatted } from '../lib/firebase';
 import { getMongo } from '../lib/mongodb';
 
 /**
@@ -6,31 +7,51 @@ import { getMongo } from '../lib/mongodb';
  *
  */
 export const getSingleQuiz = async (quizId: string | string[]) => {
-    const { CQuiz } = await getMongo();
-    const data = await CQuiz!.findOne({ _id: quizId });
-    console.log(data);
-    return data;
+    try {
+        const { CQuiz } = await getMongo();
+        const data = await CQuiz!.findOne({ _id: quizId });
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw Error('Error adding user to database');
+    }
 };
 
 export const getAllQuiz = async () => {
-    const { CQuiz } = await getMongo();
-    const data = await CQuiz!.find({}).toArray();
-    console.log(data);
-    return data;
+    try {
+        const { CQuiz } = await getMongo();
+        const data = await CQuiz!.find({}).toArray();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw Error('Error adding user to database');
+    }
 };
 
 export const getAnswer = async (answerId: string | string[]) => {
-    const { CAnswer } = await getMongo();
-    const data = await CAnswer!.findOne({ _id: answerId });
-    console.log(data);
-    return data;
+    try {
+        const { CAnswer } = await getMongo();
+        const data = await CAnswer!.findOne({ _id: answerId });
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw Error('Error adding user to database');
+    }
 };
 
 export const getAllUsers = async () => {
-    const { CUsers } = await getMongo();
-    const data = await CUsers!.find({}).toArray();
-    console.log(data);
-    return data;
+    try {
+        const { CUsers } = await getMongo();
+        const data = await CUsers!.find({}).toArray();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw Error('Error adding user to database');
+    }
 };
 
 /**
@@ -42,32 +63,41 @@ export const getAllUsers = async () => {
  */
 
 export const addAnswer = async (data: any) => {
-    const { CAnswer } = await getMongo();
-    const response = await CAnswer!.insertOne(data);
-    console.log(response);
-    return response;
+    try {
+        const { CAnswer } = await getMongo();
+        const response = await CAnswer!.insertOne(data);
+        console.log(response);
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw Error('Error adding user to database');
+    }
 };
 
-export const addUser = async (authUser: any) => {
-    let data;
-    const { CUsers } = await getMongo();
-    const user = await CUsers?.findOne({ _id: authUser.uid });
-    if (user) {
-        data = await CUsers?.findOneAndUpdate(
+export const addUser = async (authUser: AuthFormatted) => {
+    try {
+        const { CUsers } = await getMongo();
+        const data = await CUsers?.findOneAndUpdate(
             { _id: authUser.uid },
             { $set: authUser },
-            { returnDocument: 'after' }
+            { upsert: true, returnDocument: 'after' }
         );
-    } else {
-        data = await CUsers?.insertOne(authUser);
+        return data;
+    } catch (error) {
+        console.log(error);
+        throw Error('Error adding user to database');
     }
-    return data;
 };
 
 // Used by Backend
 export const addQuiz = async (quizData: any) => {
-    const { CQuiz } = await getMongo();
-    const response = await CQuiz!.insertOne(quizData);
-    console.log(response);
-    return response;
+    try {
+        const { CQuiz } = await getMongo();
+        const response = await CQuiz!.insertOne(quizData);
+        console.log(response);
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw Error('Error adding user to database');
+    }
 };

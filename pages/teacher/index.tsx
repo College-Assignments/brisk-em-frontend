@@ -1,4 +1,3 @@
-import { BASE_URL } from '@/src/constants/base';
 import { getLayout } from '@/src/layouts/default';
 import { auth, formatFirebaseUser } from '@/src/lib/firebase';
 import styles from '@/styles/login-loader.module.scss';
@@ -16,29 +15,24 @@ function Teacher() {
 
     useEffect(() => {
         async function postUser() {
-            if (user) {
-                await axios({
-                    method: 'POST',
-                    url: `${BASE_URL}/api/auth`,
-                    data: formatFirebaseUser(user),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-            }
+            user &&
+                (await axios.post(
+                    `/api/auth/login`,
+                    JSON.stringify(formatFirebaseUser(user)),
+                    { headers: { 'Content-Type': 'application/json' } }
+                ));
         }
         postUser();
     }, [user]);
 
     useEffect(() => {
         if (!loading) {
-            console.log('Inside loading');
             if (!user) {
                 signInWithGoogle().then(() => {
-                    // router.push('/teacher/home');
+                    router.push('/teacher/home');
                 });
             } else {
-                // router.push('/teacher/home');
+                router.push('/teacher/home');
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

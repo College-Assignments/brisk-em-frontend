@@ -14,7 +14,7 @@ export const auth = getAuth(firebase);
 
 export default firebase;
 
-interface Auth {
+export interface AuthFormatted {
     uid: string;
     email: string | null;
     name: string | null;
@@ -22,7 +22,7 @@ interface Auth {
     token: string | null;
 }
 
-export const formatFirebaseUser = (user: User): Auth => ({
+export const formatFirebaseUser = (user: User): AuthFormatted => ({
     uid: user.uid,
     email: user.email,
     name: user.displayName,
