@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
     try {
+        console.log('Called login');
         if (req.method === 'POST') {
             const user = await adminAuth.verifyIdToken(
                 req.headers.token as string
