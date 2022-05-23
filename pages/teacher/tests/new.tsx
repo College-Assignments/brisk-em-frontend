@@ -2,6 +2,8 @@ import { answerOption, optionData } from '@/src/constants/new-test';
 import { getLayout } from '@/src/layouts/teacher-dashboard';
 import { auth } from '@/src/lib/firebase';
 import { addQuizApi } from '@/src/routes/quiz';
+import { successToast } from '@/src/services/toast';
+import { formValidationSchema } from '@/src/types/yup-validation';
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -18,18 +20,19 @@ import {
   SimpleGrid,
   Text,
   Textarea,
+  useToast,
 } from '@chakra-ui/react';
 import { Field, FieldArray, Form, Formik, getIn } from 'formik';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { v4 as uuidv4 } from 'uuid';
-import * as yup from 'yup';
 
 const NewTest = () => {
-  const [user, loading] = useAuthState(auth);
-
+  const toast = useToast();
   const router = useRouter();
+
+  const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
     if (!user && !loading) {
@@ -51,24 +54,6 @@ const NewTest = () => {
     questions: [questionsData],
   };
 
-  const validationSchema = yup.object().shape({
-    title: yup.string().required('Required'),
-    description: yup.string().required('Required'),
-    questions: yup
-      .array()
-      .of(
-        yup.object().shape({
-          title: yup.string().required('Required!'),
-          options: yup.array().of(
-            yup.object().shape({
-              title: yup.string().required('Required!'),
-            })
-          ),
-        })
-      )
-      .required('Must add a question'),
-  });
-
   const submitHandler = async (values: any, actions: any) => {
     try {
       values = {
@@ -87,8 +72,9 @@ const NewTest = () => {
       };
       console.log(values);
       const token = await user!.getIdToken();
-      await addQuizApi({ token }, values);
-      // router.push('/teacher/tests');
+      await addQuizApi(token, values);
+      successToast(toast);
+      router.push('/teacher/tests');
     } catch (error) {
       console.log('error', error);
     } finally {
@@ -111,7 +97,7 @@ const NewTest = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={submitHandler}
-          validationSchema={validationSchema}
+          validationSchema={formValidationSchema}
         >
           {(props) => (
             <Form>
@@ -180,7 +166,11 @@ const NewTest = () => {
                                       <Input
                                         name={`questions[${index}][title]`}
                                         as={Field}
-                                        mb={(!errorHandler(`questions[${index}][title]`) && 3) as any}
+                                        mb={
+                                          (!errorHandler(
+                                            `questions[${index}][title]`
+                                          ) && 3) as any
+                                        }
                                       />
                                       <FormErrorMessage>
                                         {errorHandler(
@@ -191,7 +181,9 @@ const NewTest = () => {
                                     <SimpleGrid
                                       minChildWidth="300px"
                                       spacing="10px"
-                                      mb={{ base: 4 }}
+                                      mb={{
+                                        base: 4,
+                                      }}
                                     >
                                       {optionData.map((option, subIndex) => (
                                         <FormControl
@@ -226,10 +218,15 @@ const NewTest = () => {
                                         style={{
                                           width: '100%',
                                           padding: '10px',
+                                          border: '1px solid #eaeaea',
+                                          borderRadius: '6px',
                                         }}
                                       >
                                         {answerOption.map((value, key) => (
-                                          <option value={value.answer} key={key}>
+                                          <option
+                                            value={value.answer}
+                                            key={key}
+                                          >
                                             {value.label}
                                           </option>
                                         ))}
@@ -253,9 +250,11 @@ const NewTest = () => {
                                       {index === questions.length - 1 && (
                                         <IconButton
                                           onClick={() => push(questionsData)}
+                                          width="full"
                                           aria-label="Add Question"
                                           icon={<AddIcon />}
-                                          variant="ghost"
+                                          variant="solid"
+                                          marginBottom={4}
                                         >
                                           +
                                         </IconButton>
@@ -283,9 +282,10 @@ const NewTest = () => {
               </Field>
               <Center>
                 <Button
+                  type="submit"
+                  width="full"
                   colorScheme="green"
                   isLoading={props.isSubmitting}
-                  type="submit"
                   disabled={!(props.isValid && props.dirty)}
                 >
                   Submit Quiz
