@@ -20,6 +20,7 @@ export const getAllQuiz = async () => {
   const quiz = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   return quiz;
 };
+
 export const getAnswer = async (answerId: string | string[]) => {
   const docRef = doc(db, 'answer', String(answerId));
   const snapshot = await getDoc(docRef);

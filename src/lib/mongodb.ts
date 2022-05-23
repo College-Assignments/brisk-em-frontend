@@ -1,19 +1,31 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 
-const mongoClientOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-};
+const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI!;
+const MONGODB_DB = process.env.NEXT_PUBLIC_MONGODB_URI!;
 
-const mongoUri = process.env.NEXT_PUBLIC_MONGODB_URI!;
+let client: MongoClient | null = null;
+let db: Db | null = null;
 
-const client = new MongoClient(mongoUri, mongoClientOptions);
+export async function connectToDatabase() {
+  if (client && db) {
+    return {
+      client: client,
+      db: db,
+    };
+  }
 
-export function mongodbConnect() {
-  client.connect((err) => {
-    const collection = client.db('test').collection('devices');
-    // perform actions on the collection object
-    client.close();
-  });
+  const mongoClientOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverApi: ServerApiVersion.v1,
+  };
+
+  client = new MongoClient(MONGODB_URI, mongoClientOptions);
+  await client.connect();
+  db = client.db(MONGODB_DB);
+
+  return {
+    client,
+    db,
+  };
 }

@@ -9,21 +9,21 @@ function Users(props: any) {
 
   return (
     <div>
-        {quiz.length > 0 && (
-          <div style={{ display: 'grid' }}>
-            {quiz.map((singleQuiz: any) => (
-              <Box
-                key={singleQuiz.id}
-                m={2}
-                as="button"
-                textAlign="start"
-                onClick={() => router.push(`/student/tests/${singleQuiz.id}`)}
-              >
-                {quizCard(singleQuiz)}
-              </Box>
-            ))}
-          </div>
-        )}
+      {quiz.length > 0 && (
+        <div style={{ display: 'grid' }}>
+          {quiz.map((singleQuiz: any) => (
+            <Box
+              key={singleQuiz.id}
+              m={2}
+              as="button"
+              textAlign="start"
+              onClick={() => router.push(`/student/tests/${singleQuiz.id}`)}
+            >
+              {quizCard(singleQuiz)}
+            </Box>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -32,11 +32,20 @@ Users.getLayout = getLayout;
 
 const quizCard = (singleQuiz: any) => {
   return (
-    <Box mt={2} borderWidth="1px" borderRadius="lg" p={6} boxShadow="sm" bg="white">
-      <Heading as="h3" size="md" fontWeight={600}>{singleQuiz.title}</Heading>
+    <Box
+      mt={2}
+      borderWidth="1px"
+      borderRadius="lg"
+      p={6}
+      boxShadow="sm"
+      bg="white"
+    >
+      <Heading as="h3" size="md" fontWeight={600}>
+        {singleQuiz.title}
+      </Heading>
 
       <Text color="gray.500" mt={2}>
-        Posted By: {singleQuiz.user.name}
+        Posted By: {singleQuiz.user?.name}
       </Text>
       <Text color="gray.500" mt={2}>
         Questions: {singleQuiz.questions.length}
@@ -52,7 +61,10 @@ export async function getServerSideProps() {
   const quiz = await getAllQuiz();
   const users = await getAllUsers();
   const data = quiz.map((singleQuiz: any) => {
-    return { ...singleQuiz, user: users.find((user) => user.id === singleQuiz.userId) };
+    return {
+      ...singleQuiz,
+      user: users.find((user) => user.id === singleQuiz.userId),
+    };
   });
   return { props: { quiz: JSON.stringify(data) } };
 }
