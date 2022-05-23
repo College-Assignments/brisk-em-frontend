@@ -1,11 +1,11 @@
 import { addUser } from '@/src/services/db';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function login(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+    req: NextApiRequest,
+    res: NextApiResponse
+) {
     try {
-        console.log(req.method);
-        console.log(req.body);
-        console.log(req.headers);
         if (req.method === 'POST') {
             console.log(req.body);
             await addUser(req.body);
