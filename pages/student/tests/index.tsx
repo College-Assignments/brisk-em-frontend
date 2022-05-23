@@ -60,10 +60,10 @@ const quizCard = (singleQuiz: any) => {
 export async function getServerSideProps() {
   const quiz = await getAllQuiz();
   const users = await getAllUsers();
-  const data = quiz.map((singleQuiz: any) => {
+  const data = quiz?.map((singleQuiz: any) => {
     return {
       ...singleQuiz,
-      user: users.find((user) => user.id === singleQuiz.userId),
+      user: users?.find((user) => user.id === singleQuiz.userId),
     };
   });
   return { props: { quiz: JSON.stringify(data) } };

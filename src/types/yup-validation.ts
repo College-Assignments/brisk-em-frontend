@@ -1,4 +1,4 @@
-import yup from 'yup';
+import * as yup from 'yup';
 
 export const formValidationSchema = yup.object().shape({
   title: yup.string().required('Required'),
