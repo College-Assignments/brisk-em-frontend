@@ -51,7 +51,7 @@ function ShowQuiz(quiz: IQuiz, onSubmit: any) {
           <Form>
             {quiz.questions.map((singleQuiz, key) => (
               <Field name={singleQuiz.questionId} key={key}>
-                {({ field, _form }: { field: any, _form: any }) => (
+                {({ field, _form }: { field: any; _form: any }) => (
                   <FormControl
                     as="fieldset"
                     isRequired={true}
@@ -91,7 +91,7 @@ function ShowQuiz(quiz: IQuiz, onSubmit: any) {
       </Formik>
     </Container>
   );
-};
+}
 
 function SingleQuiz(props: any) {
   const [user, loading] = useAuthState(auth);
@@ -124,12 +124,8 @@ function SingleQuiz(props: any) {
     }
   };
 
-  return (
-    <>
-      {quiz && ShowQuiz(quiz, onSubmit)}
-    </>
-  );
-};
+  return <>{quiz && ShowQuiz(quiz, onSubmit)}</>;
+}
 
 export async function getServerSideProps(context: NextPageContext) {
   const quizId = context.query.id!;

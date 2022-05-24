@@ -23,6 +23,7 @@ export default async function handler(
         throw Error();
     }
   } catch (error) {
-    res.status(400).json({ status: false, message: 'Invalid Request' });
+    console.log(error);
+    return res.status(400).json({ status: false, message: 'Invalid Request' });
   }
 }
