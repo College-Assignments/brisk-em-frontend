@@ -22,6 +22,7 @@ function TeachersDashboardLayout({ children }: { children: ReactNode }) {
         <title>Teacher Dashboard</title>
       </Head>
       <DashboardHeader
+        key="key"
         router={router}
         basepath="teacher"
         selected={selected}

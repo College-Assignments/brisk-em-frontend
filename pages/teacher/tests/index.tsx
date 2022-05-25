@@ -1,20 +1,23 @@
-import { BASE_URL } from '@/src/constants/base';
 import { api } from '@/src/constants/routes';
 import { getLayout } from '@/src/layouts/teacher-dashboard';
-import { Box, Divider, Heading, Text } from '@chakra-ui/react';
+import { Box, Divider, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
 import { Button } from 'antd';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
-function Tests(props: any) {
+function Tests() {
   const router = useRouter();
-  const quiz = JSON.parse(props.quiz);
+  const { data: quiz } = useQuery('quiz', () =>
+    fetch(api.getQuiz).then((e) => e.json())
+  );
 
   function navigateToCreateTest() {
     router.push('/teacher/tests/new');
   }
 
   return (
-    <div>
+    <div style={{ minHeight: '360px' }}>
       <Button
         type="dashed"
         onClick={navigateToCreateTest}
@@ -27,48 +30,36 @@ function Tests(props: any) {
       <br />
       <Divider />
       {/* Show Existing Tests */}
-      <div>
-        {quiz?.length > 0 && (
-          <div style={{ display: 'grid' }}>
-            {quiz.map((singleQuiz: any) => (
-              <Box
-                key={singleQuiz.id}
-                m={1}
-                as="button"
-                textAlign="start"
-                // TODO: Change here to edit quiz
-                onClick={() => router.push(`/quiz/${singleQuiz.id}`)}
-              >
-                {generateQuizCard(singleQuiz)}
-              </Box>
-            ))}
-          </div>
-        )}
-      </div>
+      {quiz?.length > 0 ? (
+        <div style={{ display: 'grid' }}>
+          {quiz.map((singleQuiz: any) => (
+            <Box
+              key={singleQuiz._id}
+              m={1}
+              as="button"
+              textAlign="start"
+              // TODO: Change here to edit quiz
+              onClick={() => router.push(`/quiz/${singleQuiz.id}`)}
+            >
+              {GenerateQuizCard(singleQuiz)}
+            </Box>
+          ))}
+        </div>
+      ) : (
+        <Stack
+          justifyContent="center"
+          style={{ minHeight: '300px', display: 'flex', alignItems: 'center' }}
+        >
+          <Spinner size="xl" />
+        </Stack>
+      )}
     </div>
   );
 }
 
 Tests.getLayout = getLayout;
 
-export async function getServerSideProps() {
-  try {
-    const quiz = await fetch(BASE_URL + api.getQuiz).then((res) => res.json());
-    const users = await fetch(BASE_URL + api.getUser).then((res) => res.json());
-    const data = quiz.map((singleQuiz: any) => {
-      return {
-        ...singleQuiz,
-        user: users?.find((user: any) => user.uid === singleQuiz.userId),
-      };
-    });
-    return { props: { quiz: JSON.stringify(data) } };
-  } catch (error) {
-    console.log('Server Sided Error', error);
-    return { props: { quiz: null } };
-  }
-}
-
-const generateQuizCard = (singleQuiz: any) => {
+const GenerateQuizCard = (singleQuiz: any) => {
   return (
     <Box
       p={6}
