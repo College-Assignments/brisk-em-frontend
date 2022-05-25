@@ -12,6 +12,8 @@ function Tests() {
     fetch(api.getQuiz).then((e) => e.json())
   );
 
+  console.log(quiz);
+
   function navigateToCreateTest() {
     router.push('/teacher/tests/new');
   }

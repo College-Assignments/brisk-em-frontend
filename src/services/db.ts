@@ -21,7 +21,19 @@ export const getSingleQuiz = async (quizId: string | string[]) => {
 export const getAllQuiz = async () => {
   try {
     const { CQuiz } = await getMongo();
-    const data = await CQuiz?.find().toArray();
+    const data = await CQuiz?.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+    ]).toArray();
     console.log(data);
     return data;
   } catch (error) {
