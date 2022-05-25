@@ -1,5 +1,6 @@
 import { adminAuth } from '@/src/lib/firebase-admin';
 import { addQuiz, getAllQuiz, getSingleQuiz } from '@/src/services/db';
+import { isEmpty } from 'lodash';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -7,15 +8,13 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    console.log('Started api/quiz/index.ts', new Date().toISOString());
     switch (req.method) {
       case 'GET':
         let data;
         const { quizId } = req.query;
-        console.log('Start fetching data', new Date().toISOString());
-        if (quizId) data = await getSingleQuiz(quizId);
-        else data = await getAllQuiz();
-        console.log('END', new Date().toISOString());
+        console.log('/quiz req.query -> ', req.query);
+        if (isEmpty(quizId)) data = await getAllQuiz();
+        else data = await getSingleQuiz(quizId);
         return res.status(200).json(data);
       case 'POST':
         const user = await adminAuth.verifyIdToken(req.headers.token as string);

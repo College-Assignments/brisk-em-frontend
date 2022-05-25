@@ -262,10 +262,11 @@ const NewTest = () => {
                                     </Flex>
                                     {index !== questions.length - 1 && (
                                       <Divider
-                                        mt={2}
-                                        mb={4}
+                                        mt={4}
+                                        mb={6}
                                         css={{
-                                          boxShadow: '1px 1px #888888',
+                                          borderRadius: '6px',
+                                          boxShadow: '1px 1px #dfdfdf',
                                         }}
                                       />
                                     )}

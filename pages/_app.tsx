@@ -9,26 +9,25 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 const queryCache = new QueryCache();
 
 const queryClient = new QueryClient({
-    queryCache,
-    defaultOptions: {
-        queries: {
-            retry: false,
-            staleTime: 60000,
-        },
+  queryCache,
+  defaultOptions: {
+    queries: {
+      // retry: false,
+      staleTime: 60000,
+      refetchOnWindowFocus: false,
     },
+  },
 });
 
 function MyApp({ Component, pageProps }: any) {
-    const getLayout: any = Component?.getLayout || defaultLayout;
+  const getLayout: any = Component?.getLayout || defaultLayout;
 
-    return (
-        <QueryClientProvider client={queryClient}>
-            <ChakraProvider>
-                {getLayout(<Component {...pageProps} />)}
-            </ChakraProvider>
-            <ReactQueryDevtools />
-        </QueryClientProvider>
-    );
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>{getLayout(<Component {...pageProps} />)}</ChakraProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
+  );
 }
 
 export default MyApp;

@@ -8,11 +8,9 @@ import { useQuery } from 'react-query';
 
 function Tests() {
   const router = useRouter();
-  const { data: quiz } = useQuery('quiz', () =>
-    fetch(api.getQuiz).then((e) => e.json())
+  const { data: quiz } = useQuery('quizes', () =>
+    fetch(api.getQuiz).then((e) => e?.json() ?? null)
   );
-
-  console.log(quiz);
 
   function navigateToCreateTest() {
     router.push('/teacher/tests/new');
@@ -40,8 +38,7 @@ function Tests() {
               m={1}
               as="button"
               textAlign="start"
-              // TODO: Change here to edit quiz
-              onClick={() => router.push(`/quiz/${singleQuiz.id}`)}
+              onClick={() => router.push(`/teacher/tests/${singleQuiz._id}`)}
             >
               {GenerateQuizCard(singleQuiz)}
             </Box>

@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 import { getMongo } from '../lib/mongodb';
 import { AuthFormatted } from '../types/common';
 
@@ -9,8 +11,9 @@ import { AuthFormatted } from '../types/common';
 export const getSingleQuiz = async (quizId: string | string[]) => {
   try {
     const { CQuiz } = await getMongo();
-    const data = await CQuiz?.findOne({ _id: quizId });
-    console.log(data);
+    console.log(CQuiz);
+    const data = await CQuiz?.findOne({ _id: new ObjectId(String(quizId)) });
+    console.log('Single Quiz -> ', data);
     return data;
   } catch (error) {
     console.log(error);
@@ -34,7 +37,7 @@ export const getAllQuiz = async () => {
         $unwind: '$user',
       },
     ]).toArray();
-    console.log(data);
+    console.log('All Quiz -> ', data);
     return data;
   } catch (error) {
     console.log(error);
@@ -45,7 +48,9 @@ export const getAllQuiz = async () => {
 export const getAnswer = async (answerId: string | string[]) => {
   try {
     const { CAnswer } = await getMongo();
-    const data = await CAnswer?.findOne({ _id: answerId });
+    const data = await CAnswer?.findOne({
+      _id: new ObjectId(String(answerId)),
+    });
     console.log(data);
     return data;
   } catch (error) {
@@ -90,7 +95,7 @@ export const addUser = async (authUser: AuthFormatted) => {
   try {
     const { CUsers } = await getMongo();
     const data = await CUsers?.findOneAndUpdate(
-      { _id: authUser.uid },
+      { _id: new ObjectId(String(authUser.uid)) },
       { $set: authUser },
       { upsert: true, returnDocument: 'after' }
     );
