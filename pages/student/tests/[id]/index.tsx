@@ -138,7 +138,7 @@ export async function getServerSideProps(context: NextPageContext) {
 const quizContainerStyle = {
   padding: '3rem',
   borderRadius: 1,
-  background: 'url("/images/paper-texture.png")',
+  background: 'url("/images/paper-texture.webp")',
   boxShadow:
     'rgba(50, 50, 93, 0.15) 0px 25px 50px -10px, rgba(0, 0, 0, 0.15) 0px 15px 30px -15px',
 };
