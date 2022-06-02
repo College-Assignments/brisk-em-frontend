@@ -21,13 +21,46 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
+export default function SingleQuiz(props: any) {
+  const [user, loading] = useAuthState(auth);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push(`/signin?next=/student/tests/${props.quizId}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, loading]);
+
+  const quiz = JSON.parse(props.quiz);
+
+  const onSubmit = async (values: any, actions: any) => {
+    try {
+      const token = await user?.getIdToken();
+      if (!token) {
+        alert('Invalid token, please relogin');
+        return;
+      }
+      const resp = await addAnswerApi(token, props.quizId, values);
+      const answerId = resp.data.data.answerId;
+      router.push(`/student/tests/${props.quizId}/answer/${answerId}`);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      actions.setSubmitting(false);
+    }
+  };
+
+  return <>{quiz && ShowQuiz(quiz, onSubmit)}</>;
+}
+
 function ShowQuiz(quiz: IQuiz, onSubmit: any) {
   return (
     <Container
+      paddingTop="2rem"
+      w="100%"
       maxW="7xl"
-      mt={5}
-      mb={5}
-      borderWidth="1px"
       borderRadius="lg"
       p={6}
       boxShadow="xl"
@@ -93,44 +126,8 @@ function ShowQuiz(quiz: IQuiz, onSubmit: any) {
   );
 }
 
-function SingleQuiz(props: any) {
-  const [user, loading] = useAuthState(auth);
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user && !loading) {
-      router.push(`/signin?next=/student/tests/${props.quizId}`);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, loading]);
-
-  const quiz = JSON.parse(props.quiz);
-
-  const onSubmit = async (values: any, actions: any) => {
-    try {
-      const token = await user?.getIdToken();
-      if (!token) {
-        alert('Invalid token, please relogin');
-        return;
-      }
-      const resp = await addAnswerApi(token, props.quizId, values);
-      const answerId = resp.data.data.answerId;
-      router.push(`/student/tests/${props.quizId}/answer/${answerId}`);
-    } catch (error) {
-      console.log('error', error);
-    } finally {
-      actions.setSubmitting(false);
-    }
-  };
-
-  return <>{quiz && ShowQuiz(quiz, onSubmit)}</>;
-}
-
 export async function getServerSideProps(context: NextPageContext) {
   const quizId = context.query.id!;
   const quizData = await getSingleQuiz(quizId);
-  return { props: { quiz: quizData, quizId } };
+  return { props: { quiz: JSON.stringify(quizData), quizId } };
 }
-
-export default SingleQuiz;

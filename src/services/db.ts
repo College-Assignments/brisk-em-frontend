@@ -11,8 +11,7 @@ import { AuthFormatted } from '../types/common';
 export const getSingleQuiz = async (quizId: string | string[]) => {
   try {
     const { CQuiz } = await getMongo();
-    console.log(CQuiz);
-    await CQuiz.findOne({ _id: new ObjectId(String(quizId)) });
+    console.log(quizId);
     const data = await CQuiz.aggregate([
       { $match: { _id: new ObjectId(String(quizId)) } },
       {
@@ -27,7 +26,6 @@ export const getSingleQuiz = async (quizId: string | string[]) => {
         $unwind: '$user',
       },
     ]).toArray();
-    console.log('Single Quiz -> ', data);
     return data[0];
   } catch (error) {
     console.log(error);
@@ -109,7 +107,7 @@ export const addUser = async (authUser: AuthFormatted) => {
   try {
     const { CUsers } = await getMongo();
     const data = await CUsers.findOneAndUpdate(
-      { _id: new ObjectId(String(authUser.uid)) },
+      { _id: String(authUser.uid) },
       { $set: authUser },
       { upsert: true, returnDocument: 'after' }
     );

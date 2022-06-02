@@ -1,5 +1,5 @@
 import { getLayout } from '@/src/layouts/student-dashboard';
-import { getAllQuiz, getAllUsers } from '@/src/services/db';
+import { getAllQuiz } from '@/src/services/db';
 import { Box, Divider, Heading, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
@@ -13,11 +13,11 @@ function Users(props: any) {
         <div style={{ display: 'grid' }}>
           {quiz.map((singleQuiz: any) => (
             <Box
-              key={singleQuiz.id}
+              key={singleQuiz._id}
               m={2}
               as="button"
               textAlign="start"
-              onClick={() => router.push(`/student/tests/${singleQuiz.id}`)}
+              onClick={() => router.push(`/student/tests/${singleQuiz._id}`)}
             >
               {quizCard(singleQuiz)}
             </Box>
@@ -59,14 +59,7 @@ const quizCard = (singleQuiz: any) => {
 
 export async function getServerSideProps() {
   const quiz = await getAllQuiz();
-  const users = await getAllUsers();
-  const data = quiz?.map((singleQuiz: any) => {
-    return {
-      ...singleQuiz,
-      user: users?.find((user) => user.id === singleQuiz.userId),
-    };
-  });
-  return { props: { quiz: JSON.stringify(data) } };
+  return { props: { quiz: JSON.stringify(quiz) } };
 }
 
 export default Users;

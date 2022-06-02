@@ -1,8 +1,9 @@
 import { getLayout } from '@/src/layouts/default';
-import { auth } from '@/src/lib/firebase';
+import { auth, formatFirebaseUser } from '@/src/lib/firebase';
 import styles from '@/styles/login-loader.module.scss';
 import { GoogleOutlined } from '@ant-design/icons';
 import { Button, Spin } from 'antd';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
@@ -12,17 +13,29 @@ function Student() {
   const [user, loading] = useAuthState(auth);
   const [signInWithGoogle] = useSignInWithGoogle(auth);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      console.log(user);
-      if (!loading) {
-        console.log('Inside loading');
-        if (!user) signInWithGoogle().then(() => router.push('/student/home'));
-        else router.push('/student/home');
-      }
-    }, 1000);
+  async function postUser() {
+    if (user) {
+      await axios.post(
+        `/api/auth/login`,
+        JSON.stringify(formatFirebaseUser(user)),
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
 
-    return () => clearTimeout(timer);
+  useEffect(() => {
+    if (!loading) {
+      if (!user) {
+        signInWithGoogle().then(async () => {
+          await postUser();
+          router.push('/student/home');
+        });
+      } else {
+        postUser().then(() => {
+          router.push('/student/home');
+        });
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 

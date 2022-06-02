@@ -3,18 +3,32 @@
   min-width: 100vw;
   min-height: 100vh;
   display: grid;
+  overflow: hidden;
   grid-template-columns: auto auto;
+  background: linear-gradient(to right, #8a2387c6, #e940579e, #f27121dc);
 }
 
 .teacher, .student{
   display: grid;
   place-items: center;
+  transition: all 0.15s ease-in-out;
+  &:hover{
+    transform: scale(1.01);
+  }
 }
 
 .teacher{
   background-color: #fafafa;
+  background: url('/images/teacher.png');
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+  border-right: 2px dotted #d9d9d9;
 }
 
 .student{
   background-color: rgb(212, 254, 255);
+  background: url('/images/student.png');
+  background-size: cover;
+  background-position: center;
 }
