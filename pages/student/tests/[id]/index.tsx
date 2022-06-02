@@ -2,6 +2,7 @@ import { auth } from '@/src/lib/firebase';
 import { addAnswerApi } from '@/src/routes/quiz';
 import { getSingleQuiz } from '@/src/services/db';
 import { IQuiz } from '@/src/types/quiz';
+import style from '@/styles/SingleQuiz.module.scss';
 import {
   Button,
   Center,
@@ -58,27 +59,17 @@ export default function SingleQuiz(props: any) {
 function ShowQuiz(quiz: IQuiz, onSubmit: any) {
   return (
     <Container
-      paddingTop="2rem"
-      w="100%"
+      mt={20}
       maxW="7xl"
-      borderRadius="lg"
-      p={6}
-      boxShadow="xl"
+      paddingTop="2rem"
+      className={style.container}
+      style={quizContainerStyle}
     >
       <Center flexDirection="column">
         <Heading>{quiz.title}</Heading>
+        <Text mt={4}>{quiz.description}</Text>
       </Center>
-      <Text mt={4}>{quiz.description}</Text>
-      <Heading mt={4} size="lg">
-        Questions:
-      </Heading>
-      <Divider
-        mt={4}
-        mb={4}
-        css={{
-          boxShadow: '1px 1px #888888',
-        }}
-      />
+      <Divider mt="2rem" mb="2rem" />
       <Formik initialValues={{}} onSubmit={onSubmit}>
         {(props) => (
           <Form>
@@ -90,7 +81,9 @@ function ShowQuiz(quiz: IQuiz, onSubmit: any) {
                     isRequired={true}
                     mb={{ base: 4, md: 0 }}
                   >
-                    <FormLabel as="legend">{singleQuiz.title}</FormLabel>
+                    <FormLabel as="legend">
+                      {`Q${key + 1}: ${singleQuiz.title}`}
+                    </FormLabel>
                     <RadioGroup>
                       <SimpleGrid minChildWidth="120px" mb={2}>
                         {singleQuiz.options.map((option, subkey) => (
@@ -106,6 +99,8 @@ function ShowQuiz(quiz: IQuiz, onSubmit: any) {
                         ))}
                       </SimpleGrid>
                     </RadioGroup>
+                    <br />
+                    <br />
                   </FormControl>
                 )}
               </Field>
@@ -113,8 +108,12 @@ function ShowQuiz(quiz: IQuiz, onSubmit: any) {
             <Center mt={10}>
               <Button
                 type="submit"
+                className={style.fancyButton}
                 isLoading={props.isSubmitting}
-                colorScheme="green"
+                style={{
+                  height: '30px',
+                  borderRadius: 3,
+                }}
               >
                 Submit
               </Button>
@@ -131,3 +130,11 @@ export async function getServerSideProps(context: NextPageContext) {
   const quizData = await getSingleQuiz(quizId);
   return { props: { quiz: JSON.stringify(quizData), quizId } };
 }
+
+const quizContainerStyle = {
+  padding: '3rem',
+  borderRadius: 1,
+  background: 'url("/images/paper-texture.png")',
+  boxShadow:
+    'rgba(50, 50, 93, 0.15) 0px 25px 50px -10px, rgba(0, 0, 0, 0.15) 0px 15px 30px -15px',
+};
