@@ -45,8 +45,6 @@ export default function SingleQuiz(props: any) {
         return;
       }
       const resp = await addAnswerApi(token, props.quizId, values);
-      console.log('Inside Single Quiz component', resp);
-      debugger;
       const answerId = resp.data.data.answerId;
       router.push(`/student/tests/${props.quizId}/${answerId}`);
     } catch (error) {

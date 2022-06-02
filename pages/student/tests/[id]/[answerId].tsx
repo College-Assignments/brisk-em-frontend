@@ -5,15 +5,14 @@ import { NextPageContext } from 'next';
 
 export default function Answer(props: any) {
   const quiz = JSON.parse(props.quiz);
-  const answer = JSON.parse(props.answer);
+  const givenAnswer = JSON.parse(props.answer);
 
   return (
     <>
-      {quiz && answer && (
+      {quiz && givenAnswer && (
         <Container
           mt={20}
           maxW="7xl"
-          paddingTop="2rem"
           className={style.container}
           style={quizContainerStyle}
         >
@@ -24,62 +23,17 @@ export default function Answer(props: any) {
             <Text mt={4}>{quiz.description}</Text>
           </Center>
           <Divider mt="2rem" mb="2rem" />
-          {quiz.questions.map((singleQuiz: any, i: any) => {
-            return (
-              <Box
-                key={i}
-                mt={i !== 0 ? 4 : 0}
-                backgroundColor={
-                  answer.questions[singleQuiz.questionId] &&
-                  singleQuiz.options[singleQuiz.answer].optionId ===
-                    answer.questions[singleQuiz.questionId]
-                    ? '#9ae6b4a8;'
-                    : 'red.200'
-                }
-                className={style.questionBox}
-              >
-                <Text style={{ fontSize: 16, fontWeight: 800 }}>
-                  Q{i + 1}: {singleQuiz.title}
-                </Text>
-                <RadioGroup
-                  defaultValue={singleQuiz.options[singleQuiz.answer].title}
-                >
-                  <SimpleGrid minChildWidth="120px" mt={2}>
-                    {singleQuiz.options.map((option: any, index: any) => (
-                      <Radio value={option.title} isDisabled key={index}>
-                        {option.title}
-                      </Radio>
-                    ))}
-                  </SimpleGrid>
-                </RadioGroup>
-                <Text mt={3}>
-                  Correct Answer: {singleQuiz.options[singleQuiz.answer].title}
-                </Text>
-                {answer.questions[singleQuiz.questionId] ? (
-                  <Text>
-                    Selected Answer:{' '}
-                    {
-                      singleQuiz.options.find(
-                        (option: any) =>
-                          option.optionId ===
-                          answer.questions[singleQuiz.questionId]
-                      ).title
-                    }
-                  </Text>
-                ) : (
-                  <Text>Not Answered</Text>
-                )}
-              </Box>
-            );
-          })}
-          <br />
-          <br />
+          {quiz.questions.map((singleQuiz: any, i: any) =>
+            AnswerBox({ singleQuiz, givenAnswer, i })
+          )}
           <Button
             className={style.fancyButton}
             isLoading={props.isSubmitting}
             style={{
               height: '30px',
-              borderRadius: 3,
+              borderRadius: 6,
+              marginTop: '4rem',
+              minWidth: '10rem',
             }}
           >
             Submit
@@ -98,10 +52,59 @@ export async function getServerSideProps(context: NextPageContext) {
   const answerData = await getAnswer(answerId);
   return {
     props: {
-      answer: JSON.stringify(answerData),
       quiz: JSON.stringify(quizData),
+      answer: JSON.stringify(answerData),
     },
   };
+}
+
+function AnswerBox({ singleQuiz, givenAnswer, i }: any) {
+  return (
+    <Box
+      key={i}
+      mt={i !== 0 ? 4 : 0}
+      style={answerBoxStyle}
+      className={style.questionBox}
+      border={cardBackground(singleQuiz, givenAnswer)}
+    >
+      <Text style={{ fontSize: 16, fontWeight: 800 }}>
+        Q{i + 1}: {singleQuiz.title}
+      </Text>
+      <RadioGroup defaultValue={singleQuiz.options[singleQuiz.answer].title}>
+        <SimpleGrid minChildWidth="120px" mt={2}>
+          {singleQuiz.options.map((option: any, index: any) => (
+            <Radio value={option.title} isDisabled key={index}>
+              {option.title}
+            </Radio>
+          ))}
+        </SimpleGrid>
+      </RadioGroup>
+      <Text mt={3}>
+        Correct Answer: {singleQuiz.options[singleQuiz.answer].title}
+      </Text>
+      {givenAnswer.questions[singleQuiz.questionId] ? (
+        <Text>
+          Selected Answer:{' '}
+          {
+            singleQuiz.options.find(
+              (option: any) =>
+                option.optionId === givenAnswer.questions[singleQuiz.questionId]
+            ).title
+          }
+        </Text>
+      ) : (
+        <Text>Not Answered</Text>
+      )}
+    </Box>
+  );
+}
+
+function cardBackground(singleQuiz: any, givenAnswer: any) {
+  return givenAnswer.questions[singleQuiz.questionId] &&
+    singleQuiz.options[singleQuiz.answer].optionId ===
+      givenAnswer.questions[singleQuiz.questionId]
+    ? '1px solid #52ff8f80;'
+    : '1px solid #ff72727a';
 }
 
 const quizContainerStyle = {
@@ -110,4 +113,9 @@ const quizContainerStyle = {
   background: 'url("/images/paper-texture.webp")',
   boxShadow:
     'rgba(50, 50, 93, 0.15) 0px 25px 50px -10px, rgba(0, 0, 0, 0.15) 0px 15px 30px -15px',
+};
+
+const answerBoxStyle = {
+  padding: '1rem',
+  background: '#fefefeec',
 };

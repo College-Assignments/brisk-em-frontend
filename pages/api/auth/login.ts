@@ -7,7 +7,6 @@ export default async function handler(
 ) {
   try {
     if (req.method === 'POST') {
-      console.log(req.body);
       await addUser(req.body);
       console.log('Added user ended');
       return res.status(200).json({
