@@ -59,6 +59,11 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 function AnswerBox({ singleQuiz, givenAnswer, i }: any) {
+  const answerId = givenAnswer.questions[singleQuiz.questionId];
+  const answer = singleQuiz.options.find(
+    (option: any) => option.optionId === answerId
+  );
+
   return (
     <Box
       key={i}
@@ -70,13 +75,15 @@ function AnswerBox({ singleQuiz, givenAnswer, i }: any) {
       <Text style={{ fontSize: 16, fontWeight: 800 }}>
         Q{i + 1}: {singleQuiz.title}
       </Text>
-      <RadioGroup defaultValue={singleQuiz.options[singleQuiz.answer].title}>
+      <RadioGroup defaultValue={answer.title}>
         <SimpleGrid minChildWidth="120px" mt={2}>
-          {singleQuiz.options.map((option: any, index: any) => (
-            <Radio value={option.title} isDisabled key={index}>
-              {option.title}
-            </Radio>
-          ))}
+          {singleQuiz.options.map((option: any, index: any) => {
+            return (
+              <Radio value={option.title} isDisabled key={index}>
+                {option.title}
+              </Radio>
+            );
+          })}
         </SimpleGrid>
       </RadioGroup>
       <Text mt={3}>
