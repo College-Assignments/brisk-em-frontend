@@ -1,7 +1,22 @@
 .container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px !important;
   *{
     font-family: Lora, 'Times New Roman', serif !important;
   }
+  form{
+    width: 100%;
+  }
+}
+
+.questionBox{
+  width: 100%;
+  padding: 1rem;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
 }
 
 .fancyButton {

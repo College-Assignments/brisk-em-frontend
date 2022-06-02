@@ -14,10 +14,10 @@ export default async function Answer(
         quizId: req.query.id,
         userId: user.uid,
       };
-      const response: any = await addAnswer(data);
+      const { insertedId } = await addAnswer(data);
       return res
         .status(200)
-        .json({ status: true, data: { answerId: response._id } });
+        .json({ status: true, data: { answerId: insertedId } });
     } else throw Error();
   } catch (error) {
     console.log(error);

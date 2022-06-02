@@ -2,7 +2,7 @@ import { auth } from '@/src/lib/firebase';
 import { addAnswerApi } from '@/src/routes/quiz';
 import { getSingleQuiz } from '@/src/services/db';
 import { IQuiz } from '@/src/types/quiz';
-import style from '@/styles/SingleQuiz.module.scss';
+import style from '@/styles/single-quiz.module.scss';
 import {
   Button,
   Center,
@@ -45,8 +45,10 @@ export default function SingleQuiz(props: any) {
         return;
       }
       const resp = await addAnswerApi(token, props.quizId, values);
+      console.log('Inside Single Quiz component', resp);
+      debugger;
       const answerId = resp.data.data.answerId;
-      router.push(`/student/tests/${props.quizId}/answer/${answerId}`);
+      router.push(`/student/tests/${props.quizId}/${answerId}`);
     } catch (error) {
       console.log('error', error);
     } finally {
