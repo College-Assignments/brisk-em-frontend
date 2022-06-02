@@ -1,43 +1,35 @@
+import { BASE_URL } from '@/src/constants/base';
 import { api } from '@/src/constants/routes';
 import { getLayout } from '@/src/layouts/teacher-dashboard';
-import { errToast } from '@/src/services/toast';
-import { useToast } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { ReactNode, useEffect } from 'react';
-import { useQuery } from 'react-query';
 
-function TestAction() {
-  const router = useRouter();
-  const { id } = router.query ?? null;
-  const toast = useToast();
-  const {
-    data: quiz,
-    error,
-    refetch,
-    isRefetchError,
-    remove,
-  } = useQuery(
-    'quiz',
-    () => fetch(`${api.getQuiz}?quizId=${id}`).then((e) => e?.json() ?? null),
-    { enabled: false }
-  );
-
-  useEffect(() => {
-    console.log(error, isRefetchError, router.query.id);
-    if (router.isReady && !router.query.id) router.push('/teacher/tests');
-    else if (router.isReady) {
-      refetch();
-      if (isRefetchError && error) {
-        errToast(toast);
-        router.push('/teacher/tests');
-      }
-    }
-
-    return () => remove();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
-
+function TestAction({ quiz }: any) {
   return <pre>{JSON.stringify(quiz, null, 4)}</pre>;
+}
+
+export async function getServerSideProps(context: any) {
+  const { id } = context.params ?? null;
+
+  if (!id) {
+    return {
+      props: {
+        error: 'No ID provided',
+      },
+    };
+  }
+
+  try {
+    const data = await fetch(`${BASE_URL}${api.getQuiz}?quizId=${id}`);
+    const quiz = await data.json();
+    return { props: { quiz } };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      props: {
+        error: error.message,
+      },
+    };
+  }
 }
 
 TestAction.getLayout = getLayout;

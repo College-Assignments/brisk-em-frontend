@@ -1,16 +1,12 @@
+import { BASE_URL } from '@/src/constants/base';
 import { api } from '@/src/constants/routes';
 import { getLayout } from '@/src/layouts/teacher-dashboard';
 import { Box, Divider, Heading, Spinner, Stack, Text } from '@chakra-ui/react';
 import { Button } from 'antd';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 
-function Tests() {
+function Tests({ quiz }: any) {
   const router = useRouter();
-  const { data: quiz } = useQuery('quizes', () =>
-    fetch(api.getQuiz).then((e) => e?.json() ?? null)
-  );
 
   function navigateToCreateTest() {
     router.push('/teacher/tests/new');
@@ -84,5 +80,20 @@ const GenerateQuizCard = (singleQuiz: any) => {
     </Box>
   );
 };
+
+export async function getServerSideProps(context: any) {
+  try {
+    const data = await fetch(`${BASE_URL}${api.getQuiz}`);
+    const quiz = await data.json();
+    return { props: { quiz } };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      props: {
+        error: error.message,
+      },
+    };
+  }
+}
 
 export default Tests;
