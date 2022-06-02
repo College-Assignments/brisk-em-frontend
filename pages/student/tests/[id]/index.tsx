@@ -19,6 +19,7 @@ import {
 import { Field, Form, Formik } from 'formik';
 import { NextPageContext } from 'next';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import React, { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -58,70 +59,73 @@ export default function SingleQuiz(props: any) {
 
 function ShowQuiz(quiz: IQuiz, onSubmit: any) {
   return (
-    <Container
-      mt={20}
-      maxW="7xl"
-      paddingTop="2rem"
-      className={style.container}
-      style={quizContainerStyle}
-    >
-      <Center flexDirection="column">
-        <Heading>{quiz.title}</Heading>
-        <Text mt={4}>{quiz.description}</Text>
-      </Center>
-      <Divider mt="2rem" mb="2rem" />
-      <Formik initialValues={{}} onSubmit={onSubmit}>
-        {(props) => (
-          <Form>
-            {quiz.questions.map((singleQuiz, key) => (
-              <Field name={singleQuiz.questionId} key={key}>
-                {({ field, _form }: { field: any; _form: any }) => (
-                  <FormControl
-                    as="fieldset"
-                    isRequired={true}
-                    mb={{ base: 4, md: 0 }}
-                  >
-                    <FormLabel as="legend">
-                      {`Q${key + 1}: ${singleQuiz.title}`}
-                    </FormLabel>
-                    <RadioGroup>
-                      <SimpleGrid minChildWidth="120px" mb={2}>
-                        {singleQuiz.options.map((option, subkey) => (
-                          <HStack key={subkey}>
-                            <Field
-                              {...field}
-                              type="radio"
-                              name={singleQuiz.questionId}
-                              value={option.optionId}
-                            />
-                            <Text>{option.title}</Text>
-                          </HStack>
-                        ))}
-                      </SimpleGrid>
-                    </RadioGroup>
-                    <br />
-                    <br />
-                  </FormControl>
-                )}
-              </Field>
-            ))}
-            <Center mt={10}>
-              <Button
-                type="submit"
-                className={style.fancyButton}
-                isLoading={props.isSubmitting}
-                style={{
-                  height: '30px',
-                  borderRadius: 3,
-                }}
-              >
-                Submit
-              </Button>
-            </Center>
-          </Form>
-        )}
-      </Formik>
-    </Container>
+    <>
+      <Script src="/scripts/script.js" />
+      <Container
+        mt={20}
+        maxW="7xl"
+        paddingTop="2rem"
+        className={style.container}
+        style={quizContainerStyle}
+      >
+        <Center flexDirection="column">
+          <Heading>{quiz.title}</Heading>
+          <Text mt={4}>{quiz.description}</Text>
+        </Center>
+        <Divider mt="2rem" mb="2rem" />
+        <Formik initialValues={{}} onSubmit={onSubmit}>
+          {(props) => (
+            <Form>
+              {quiz.questions.map((singleQuiz, key) => (
+                <Field name={singleQuiz.questionId} key={key}>
+                  {({ field, _form }: { field: any; _form: any }) => (
+                    <FormControl
+                      as="fieldset"
+                      isRequired={true}
+                      mb={{ base: 4, md: 0 }}
+                    >
+                      <FormLabel as="legend">
+                        {`Q${key + 1}: ${singleQuiz.title}`}
+                      </FormLabel>
+                      <RadioGroup>
+                        <SimpleGrid minChildWidth="120px" mb={2}>
+                          {singleQuiz.options.map((option, subkey) => (
+                            <HStack key={subkey}>
+                              <Field
+                                {...field}
+                                type="radio"
+                                name={singleQuiz.questionId}
+                                value={option.optionId}
+                              />
+                              <Text>{option.title}</Text>
+                            </HStack>
+                          ))}
+                        </SimpleGrid>
+                      </RadioGroup>
+                      <br />
+                      <br />
+                    </FormControl>
+                  )}
+                </Field>
+              ))}
+              <Center mt={10}>
+                <Button
+                  type="submit"
+                  className={style.fancyButton}
+                  isLoading={props.isSubmitting}
+                  style={{
+                    height: '30px',
+                    borderRadius: 3,
+                  }}
+                >
+                  Submit
+                </Button>
+              </Center>
+            </Form>
+          )}
+        </Formik>
+      </Container>
+    </>
   );
 }
 
