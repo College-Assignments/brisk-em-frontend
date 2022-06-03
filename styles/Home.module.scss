@@ -4,8 +4,9 @@
   min-height: 100vh;
   display: grid;
   overflow: hidden;
+  background: #f5f5f5;
   grid-template-columns: auto auto;
-  background: linear-gradient(to right, #8a2387c6, #e940579e, #f27121dc);
+  // background: linear-gradient(to right, #8a2387a7, #e940577d, #f27121bd);
 }
 
 .teacher, .student{

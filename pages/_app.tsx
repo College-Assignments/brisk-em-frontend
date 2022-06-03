@@ -4,7 +4,6 @@ import '@/styles/globals.scss';
 import { getLayout as defaultLayout } from '@/src/layouts/default';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 
 const queryCache = new QueryCache();
 
@@ -25,7 +24,6 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>{getLayout(<Component {...pageProps} />)}</ChakraProvider>
-      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }
